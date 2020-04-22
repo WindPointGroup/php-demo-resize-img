@@ -13,7 +13,6 @@
  */
 function createResizedImage($image_url, $max_dimension = 200) {
 
-    // [SNIPPET]
     // get the dimensions
     list($width, $height) = getimagesize($image_url);
 
@@ -31,6 +30,28 @@ function createResizedImage($image_url, $max_dimension = 200) {
         $new_width = $max_dimension * ($width/$height);
     }
 
+    // [SNIPPET]
+    // get type based on extension
+    $path_parts = pathinfo($image_url);
+    if(!isset($path_parts['extension'])){
+        return false;
+    }
+
+    try{
+        // create image
+        if(strtoupper($path_parts['extension']) === 'JPEG' || strtoupper($path_parts['extension']) === 'JPG'){
+            $src = imagecreatefromjpeg($image_url);
+        }else{
+            $src = imagecreatefrompng($image_url);
+        }
+    }catch (\Exception $e){
+        try{
+            // try one more time
+            $src = imagecreatefromjpeg($image_url);
+        }catch (\Exception $e){
+            return false;
+        }
+    }
     // [/SNIPPET]
 
 }
