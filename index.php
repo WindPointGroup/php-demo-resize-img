@@ -52,12 +52,24 @@ function createResizedImage($image_url, $max_dimension = 200) {
         }
     }
 
-    // [SNIPPET]
     // new resized resource
     $dst = imagecreatetruecolor($new_width, $new_height);
     imagecopyresampled($dst, $src, 0, 0, 0, 0, $new_width, $new_height, $width, $height);
 
     return $dst;
-    // [/SNIPPET]
-
 }
+
+// [SNIPPET]
+// our image url
+$original_image_url = "https://images.pexels.com/photos/861321/pexels-photo-861321.jpeg";
+
+// new image
+$resized_image = createResizedImage($original_image_url);
+if($resized_image !== false){
+
+    // save in temp location
+    $file_path = tempnam("/tmp", time() ."_OUR_RESIZED_IMG");
+    imagepng($resized_image, $file_path);
+}
+
+// [/SNIPPET]
