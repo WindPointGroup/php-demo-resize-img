@@ -30,7 +30,6 @@ function createResizedImage($image_url, $max_dimension = 200) {
         $new_width = $max_dimension * ($width/$height);
     }
 
-    // [SNIPPET]
     // get type based on extension
     $path_parts = pathinfo($image_url);
     if(!isset($path_parts['extension'])){
@@ -52,6 +51,13 @@ function createResizedImage($image_url, $max_dimension = 200) {
             return false;
         }
     }
+
+    // [SNIPPET]
+    // new resized resource
+    $dst = imagecreatetruecolor($new_width, $new_height);
+    imagecopyresampled($dst, $src, 0, 0, 0, 0, $new_width, $new_height, $width, $height);
+
+    return $dst;
     // [/SNIPPET]
 
 }
